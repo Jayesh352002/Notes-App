@@ -1,60 +1,59 @@
-
-import { useEffect, useState } from 'react';
-import './App.css';
-import NotesList from './components/NotesList';
-import {nanoid} from 'nanoid';
-import SearchNote from './components/SearchNote';
-import Header from './components/Header';
+import { useEffect, useState } from "react";
+import "./App.css";
+import NotesList from "./components/NotesList";
+import { nanoid } from "nanoid";
+import SearchNote from "./components/SearchNote";
+import Header from "./components/Header";
 
 function App() {
+  const [notes, setNotes] = useState([]);
 
-  const [notes , setNotes] = useState([
-    
-  ]);
+  const [searchText, setSearchText] = useState("");
 
-  const [searchText , setSearchText] = useState('');
+  const [darkMode, setDarkMode] = useState(false);
 
-  const [darkMode , setDarkMode] = useState(false);
-
-  useEffect(()=>{
-    const savedNotes = JSON.parse(localStorage.getItem('react-notes-app-data'));
-    if(savedNotes){
+  useEffect(() => {
+    const savedNotes = JSON.parse(localStorage.getItem("react-notes-app-data"));
+    if (savedNotes) {
       setNotes(savedNotes);
     }
-  },[]);
+  }, []);
 
-  useEffect (() => {
-    localStorage.setItem('react-notes-app-data', JSON.stringify(notes));
-  } , [notes]);
+  useEffect(() => {
+    localStorage.setItem("react-notes-app-data", JSON.stringify(notes));
+  }, [notes]);
 
   const addNote = (text) => {
-    const date = new Date()
+    const date = new Date();
     const newNote = {
-      id:nanoid(),
-      text:text,
-      date:date.toLocaleDateString()
+      id: nanoid(),
+      text: text,
+      date: date.toLocaleDateString(),
     };
 
-    const newNotes = [...notes,newNote];
+    const newNotes = [...notes, newNote];
     setNotes(newNotes);
-  }
+  };
 
   const deleteNote = (id) => {
-    const newNotes = notes.filter((note)=> note.id !== id);
+    const newNotes = notes.filter((note) => note.id !== id);
     setNotes(newNotes);
-  }
-
+  };
 
   return (
-    <div className={`${darkMode && 'dark-mode'}`}>
-      <div className='container'>
-      <Header handleToggleDarkMode = {setDarkMode}/>
-      <SearchNote handleSearchNote = {setSearchText}/>
-      <NotesList 
-        notes={notes.filter((note)=>note.text.toLowerCase().includes(searchText))}  handleAddNote={addNote} handleDeleteNote={deleteNote}/>
+    <div className={`${darkMode && "dark-mode"}`}>
+      <div className="container">
+        <Header handleToggleDarkMode={setDarkMode} />
+        <SearchNote handleSearchNote={setSearchText} />
+        <NotesList
+          notes={notes.filter((note) =>
+            note.text.toLowerCase().includes(searchText)
+          )}
+          handleAddNote={addNote}
+          handleDeleteNote={deleteNote}
+        />
       </div>
     </div>
-    
   );
 }
 

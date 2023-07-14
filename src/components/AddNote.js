@@ -1,39 +1,40 @@
 import { useState } from "react";
 
+const AddNote = ({ handleAddNote }) => {
+  const [noteText, setNoteText] = useState("");
+  const charCount = 300;
 
-const AddNote = ({handleAddNote}) =>{
-
-    const [noteText , setNoteText] = useState('');
-    const charCount = 300 ; 
-
-    const handleChange = (event) =>{
-        if(charCount - event.target.value.length>=0){
-            setNoteText(event.target.value);
-        }
-        
+  const handleChange = (event) => {
+    if (charCount - event.target.value.length >= 0) {
+      setNoteText(event.target.value);
     }
+  };
 
-    const handleSaveNote = () => {
-        if(noteText.trim().length>0)
-        {
-            handleAddNote(noteText);
-            setNoteText('');
-        }
-        
+  const handleSaveNote = () => {
+    if (noteText.trim().length > 0) {
+      handleAddNote(noteText);
+      setNoteText("");
     }
+  };
 
-    return(
-        <div className="note new">
+  return (
+    <div className="note new">
+      <textarea
+        rows="8"
+        cols="10"
+        placeholder="Add a new Note .."
+        value={noteText}
+        onChange={handleChange}
+      ></textarea>
 
-            <textarea rows='8' cols='10' placeholder="Add a new Note .." 
-                value={noteText} onChange={handleChange} ></textarea> 
-        
-            <div className="note-footer">
-                <small>{charCount - noteText.length} Remaining</small>
-                <button className="save" onClick={handleSaveNote}>Save</button>
-            </div>
-        </div>
-    )
-}
+      <div className="note-footer">
+        <small>{charCount - noteText.length} Remaining</small>
+        <button className="save" onClick={handleSaveNote}>
+          Save
+        </button>
+      </div>
+    </div>
+  );
+};
 
-export default AddNote ; 
+export default AddNote;
